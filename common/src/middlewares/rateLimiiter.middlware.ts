@@ -2,8 +2,13 @@ import { createClient } from "redis";
 import { logger } from "../utils/logger";
 import { RedisStore } from "rate-limit-redis";
 import { rateLimit } from "express-rate-limit";
+import { NextFunction, Request, Response } from "express";
 
-export const rateLimiterMiddleware = async () => {
+export const rateLimiterMiddleware = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const client = await createClient()
       .on("error", (err) => console.log("Redis Client Error", err))

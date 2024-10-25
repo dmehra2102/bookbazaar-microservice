@@ -7,15 +7,17 @@ import compression from "compression";
 import session from "express-session";
 import { connect, set } from "mongoose";
 import cookieParser from "cookie-parser";
+import { passportConfig } from "@/config/passport.config";
 import ConnectMongoDBSession from "connect-mongodb-session";
 import express, { Application, NextFunction, Request, Response } from "express";
 import { COOKIE_DOMAIN, NODE_ENV, PORT, SESSION_SECRET } from "@/config/env.config";
 import { errorMiddleware, logger, Routes } from "@dmehra2102-microservices-/bookbazaar-common";
 
+passportConfig(passport);
 const MongodbSessionStore = ConnectMongoDBSession(session);
 
 class App {
-  private store: any;
+  private store: ConnectMongoDBSession.MongoDBStore;
   private env: string;
   public app: Application;
   public port: string | number;
@@ -26,7 +28,7 @@ class App {
     this.port = PORT || 3000;
     this.store = new MongodbSessionStore({ uri: process.env.MONGODB_URI, collection: "userSession" }, function (error) {
       if (error) {
-        console.log(`MongodbSessionStore error while connection with mongodb :`, error);
+        logger.log(`MongodbSessionStore error while connection with mongodb :`, error);
       }
     });
     this.connectToDatabase();

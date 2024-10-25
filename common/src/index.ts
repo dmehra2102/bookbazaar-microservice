@@ -15,9 +15,9 @@ export * from "./errors/database-connection-error";
 // Middlewares
 export * from "./middlewares/rateLimiiter.middlware";
 export * from "./middlewares/errorHandling.middleware";
-export * from "./middlewares/errorHandling.middleware";
 export * from "./middlewares/validateRequest.middleware";
 export * from "./middlewares/ensureAuthorized.middleware";
+export * from "./middlewares/ensureAuthenticated.middleware";
 
 // Enums
 export * from "./enums/book.enum";

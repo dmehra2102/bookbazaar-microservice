@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { NotAuthorizedError } from "../errors/not-authorized-error";
 
 export function ensureAuthenticated(
   req: Request,
@@ -9,7 +10,5 @@ export function ensureAuthenticated(
     return next();
   }
 
-  return res
-    .status(401)
-    .json({ message: "User not authenticated", error: true });
+  throw new NotAuthorizedError("You are not logged In !! Please login first.");
 }
