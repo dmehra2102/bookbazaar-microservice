@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+        - name: auth
+          image: dmehra2102/bookbazaar-auth-image
+          env:
+            - name: MONGODB_URI
+              value: 'mongodb://bookbaazar-auth-mongo-srv:27017/auth'
+            - name: SESSION_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: auth-env
+                  key: SESSION_SECRET
+            - name: COOKIE_DOMAIN
+              valueFrom:
+                secretKeyRef:
+                  name: auth-env
+                  key: COOKIE_DOMAIN
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bookbazaar-auth-srv
+spec:
+  selector:
+    app: auth
+  ports:
+    - name: auth
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
