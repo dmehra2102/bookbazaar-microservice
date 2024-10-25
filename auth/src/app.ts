@@ -7,10 +7,10 @@ import compression from "compression";
 import session from "express-session";
 import { connect, set } from "mongoose";
 import cookieParser from "cookie-parser";
-import express, { Application } from "express";
-import { Routes } from "@/interfaces/routes.interface";
+import express, { Application, NextFunction, Request, Response } from "express";
 import ConnectMongoDBSession from "connect-mongodb-session";
 import { COOKIE_DOMAIN, MONGODB_URI, NODE_ENV, PORT, SESSION_SECRET } from "@/config/env.config";
+import { errorMiddleware, Routes } from "@dmehra2102-microservices-/bookbazaar-common";
 
 const MongodbSessionStore = ConnectMongoDBSession(session);
 
@@ -32,6 +32,7 @@ class App {
     this.connectToDatabase();
     this.initializeMiddleware();
     this.initializeRoutes(routes);
+    this.initializeErrorHandling();
   }
 
   private connectToDatabase() {
@@ -96,6 +97,13 @@ class App {
     routes.forEach(route => {
       this.app.use("/", route.router);
     });
+  }
+
+  private initializeErrorHandling() {
+    // this.app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    //   errorMiddleware(err, req, res, next);
+    // });
+    this.app.use(errorMiddleware);
   }
 }
 

@@ -1,0 +1,28 @@
+{
+  "name": "@dmehra2102-microservices-/bookbazaar-common",
+  "version": "1.0.1",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "files": [
+    "build/**/*"
+  ],
+  "scripts": {
+    "clean": "rmdir /S /Q build && mkdir build",
+    "build": "npm run clean && tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@types/express": "^5.0.0",
+    "express": "^4.21.1",
+    "express-rate-limit": "^7.4.1",
+    "express-validator": "^7.2.0",
+    "rate-limit-redis": "^4.2.0",
+    "winston": "^3.15.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}

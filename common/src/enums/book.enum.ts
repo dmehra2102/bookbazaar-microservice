@@ -1,0 +1,7 @@
+export enum BookStatus {
+  AVAILABLE = "AVAILABLE",
+  CHECKED_OUT = "CHECKED_OUT",
+  RESERVED = "RESERVED",
+  SOLD = "SOLD",
+  UNAVAILABLE = "UNAVAILABLE",
+}
