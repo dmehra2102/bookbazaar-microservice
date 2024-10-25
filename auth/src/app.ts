@@ -7,10 +7,10 @@ import compression from "compression";
 import session from "express-session";
 import { connect, set } from "mongoose";
 import cookieParser from "cookie-parser";
-import express, { Application, NextFunction, Request, Response } from "express";
 import ConnectMongoDBSession from "connect-mongodb-session";
-import { COOKIE_DOMAIN, MONGODB_URI, NODE_ENV, PORT, SESSION_SECRET } from "@/config/env.config";
-import { errorMiddleware, Routes } from "@dmehra2102-microservices-/bookbazaar-common";
+import express, { Application, NextFunction, Request, Response } from "express";
+import { COOKIE_DOMAIN, NODE_ENV, PORT, SESSION_SECRET } from "@/config/env.config";
+import { errorMiddleware, logger, Routes } from "@dmehra2102-microservices-/bookbazaar-common";
 
 const MongodbSessionStore = ConnectMongoDBSession(session);
 
@@ -42,7 +42,7 @@ class App {
 
     connect(process.env.MONGODB_URI)
       .then(() => {
-        console.info("DB connection established");
+        logger.info("DB connection established");
       })
       .catch(error => {
         console.error(error);
@@ -86,10 +86,10 @@ class App {
 
   public listen() {
     this.app.listen(this.port, () => {
-      console.info(`=================================`);
-      console.info(`======= ENV: ${this.env} =======`);
-      console.info(`🚀 🚀 Knock knock, who's there? It's your http server, listening on port ${this.port}! 🚀 🚀`);
-      console.info(`=================================`);
+      logger.info(`=================================`);
+      logger.info(`======= ENV: ${this.env} =======`);
+      logger.info(`🚀 🚀 Knock knock, who's there? It's your http server, listening on port ${this.port}! 🚀 🚀`);
+      logger.info(`=================================`);
     });
   }
 
@@ -100,10 +100,10 @@ class App {
   }
 
   private initializeErrorHandling() {
-    // this.app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    //   errorMiddleware(err, req, res, next);
-    // });
-    this.app.use(errorMiddleware);
+    this.app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+      errorMiddleware(err, req, res, next);
+    });
+    // this.app.use(errorMiddleware);
   }
 }
 

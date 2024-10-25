@@ -10,7 +10,7 @@
   "license": "ISC",
   "description": "auth service for robust authentication",
   "dependencies": {
-    "@dmehra2102-microservices-/bookbazaar-common": "^1.0.1",
+    "@dmehra2102-microservices-/bookbazaar-common": "^1.0.2",
     "bcrypt": "^5.1.1",
     "compression": "^1.7.4",
     "connect-mongodb-session": "^5.0.0",
