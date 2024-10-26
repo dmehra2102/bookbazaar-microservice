@@ -10,7 +10,7 @@ spec:
     - host: bookbazaar.dev
       http:
         paths:
-          - path: /api/user/?(.*)
+          - path: /auth/?(.*)
             pathType: ImplementationSpecific
             backend:
               service:

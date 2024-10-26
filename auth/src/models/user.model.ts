@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import { model, Schema } from "mongoose";
 import { UserRole } from "@dmehra2102-microservices-/bookbazaar-common";
 import { UserAttrs, UserDocument, UserModelInterface } from "@/interfaces/user.interface";
@@ -31,6 +32,23 @@ const userSchema = new Schema<UserDocument, UserModelInterface>(
 userSchema.statics.build = (attrs: UserAttrs) => {
   return new User(attrs);
 };
+
+userSchema.pre("save", async function (next) {
+  if (this.password && this.isModified("password")) {
+    this.password = await bcrypt.hash(this.password, bcrypt.genSaltSync(8));
+  }
+
+  next();
+});
+
+// Createing an index on the email field for faster email-based queries
+userSchema.index(
+  { email: 1 },
+  {
+    unique: true,
+    name: "email_1",
+  },
+);
 
 const User = model<UserDocument, UserModelInterface>("User", userSchema);
 export { User };

@@ -7,9 +7,9 @@ export function ensureAuthenticated(
   res: Response,
   next: NextFunction
 ) {
-  if (req.user) {
+  if (req.isAuthenticated()) {
     return next();
   }
 
-  throw new NotAuthorizedError("User not authorized~");
+  throw new NotAuthorizedError("User not authorized.");
 }

@@ -10,7 +10,7 @@
   "license": "ISC",
   "description": "auth service for robust authentication",
   "dependencies": {
-    "@dmehra2102-microservices-/bookbazaar-common": "^1.0.10",
+    "@dmehra2102-microservices-/bookbazaar-common": "^1.0.16",
     "bcrypt": "^5.1.1",
     "compression": "^1.7.4",
     "connect-mongodb-session": "^5.0.0",
@@ -27,7 +27,6 @@
     "mongoose": "^8.7.2",
     "morgan": "^1.10.0",
     "passport": "^0.7.0",
-    "passport-google-oauth": "^2.0.0",
     "passport-local": "^1.0.0",
     "rate-limit-redis": "^4.2.0"
   },
@@ -44,7 +43,6 @@
     "@types/hpp": "^0.2.6",
     "@types/morgan": "^1.9.9",
     "@types/passport": "^1.0.16",
-    "@types/passport-google-oauth": "^1.0.45",
     "@types/passport-local": "^1.0.38",
     "cross-env": "^7.0.3",
     "nodemon": "^3.1.7",

@@ -9,11 +9,15 @@ export const errorMiddleware = (
   next: NextFunction
 ) => {
   try {
+    logger.error(
+      `[${req.method}] ${req.path} >> Message : ${JSON.stringify(error)}`
+    );
     if (error instanceof CustomError) {
-      res.status(error.statusCode).send({ errors: error.serializeErrors() });
+      return res
+        .status(error.statusCode)
+        .send({ errors: error.serializeErrors() });
     }
 
-    logger.error(`[${req.method}] ${req.path} >> Message : ${error}`);
     return res.status(400).send({
       errors: [{ message: "Something went wrong" }],
     });

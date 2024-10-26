@@ -7,7 +7,7 @@ import { Strategy as LocalStrategy } from "passport-local";
 export function passportConfig(passport: PassportStatic) {
   passport.use(
     new LocalStrategy({ usernameField: "email" }, async (email, password, done) => {
-      const existingUser = await User.findOne({ email }, "isDeactivated password");
+      const existingUser = await User.findOne({ email }, "password email isDeactivated password");
 
       if (!existingUser) {
         return done("Email or Password is inconnect", false);
@@ -34,7 +34,7 @@ export function passportConfig(passport: PassportStatic) {
     try {
       const user = await User.findById(id, "email userRole").lean().exec();
       if (!user) return done("User not found!", false);
-      return done(null, user);
+      return done(null, { id: user._id, email: user.email, userRole: user.userRole });
     } catch (error) {
       return done(error, false);
     }

@@ -8,9 +8,9 @@ import session from "express-session";
 import { connect, set } from "mongoose";
 import cookieParser from "cookie-parser";
 import express, { Application } from "express";
+import { NODE_ENV, PORT } from "@/config/env.config";
 import { passportConfig } from "@/config/passport.config";
 import ConnectMongoDBSession from "connect-mongodb-session";
-import { COOKIE_DOMAIN, NODE_ENV, PORT, SESSION_SECRET } from "@/config/env.config";
 import { errorMiddleware, logger, Routes, stream } from "@dmehra2102-microservices-/bookbazaar-common";
 
 passportConfig(passport);
@@ -69,12 +69,12 @@ class App {
     this.app.use(
       session({
         name: "user-auth-cookie",
-        secret: SESSION_SECRET,
+        secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: false,
         store: this.store,
         cookie: {
-          domain: COOKIE_DOMAIN,
+          domain: process.env.COOKIE_DOMAIN,
           sameSite: "lax",
           maxAge: 30 * 24 * 60 * 60 * 1000,
           httpOnly: false,

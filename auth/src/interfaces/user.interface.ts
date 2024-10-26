@@ -20,3 +20,17 @@ export interface UserDocument extends mongoose.Document, UserAttrs {}
 export interface UserModelInterface extends mongoose.Model<UserAttrs> {
   build(attrs: UserAttrs): UserDocument;
 }
+
+export type RegisterUserInput = {
+  name: string;
+  age: string;
+  qualification: string;
+  address: string;
+  city: string;
+  email: string;
+  password: string;
+  notifications?: string[];
+  whishlist?: string[];
+  isDeactivated?: boolean;
+  userRole?: UserRole;
+};
