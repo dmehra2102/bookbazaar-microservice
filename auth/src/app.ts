@@ -7,18 +7,18 @@ import compression from "compression";
 import session from "express-session";
 import { connect, set } from "mongoose";
 import cookieParser from "cookie-parser";
+import express, { Application } from "express";
 import { passportConfig } from "@/config/passport.config";
 import ConnectMongoDBSession from "connect-mongodb-session";
-import express, { Application, NextFunction, Request, Response } from "express";
 import { COOKIE_DOMAIN, NODE_ENV, PORT, SESSION_SECRET } from "@/config/env.config";
-import { errorMiddleware, logger, Routes } from "@dmehra2102-microservices-/bookbazaar-common";
+import { errorMiddleware, logger, Routes, stream } from "@dmehra2102-microservices-/bookbazaar-common";
 
 passportConfig(passport);
 const MongodbSessionStore = ConnectMongoDBSession(session);
 
 class App {
-  private store: ConnectMongoDBSession.MongoDBStore;
-  private env: string;
+  public store: ConnectMongoDBSession.MongoDBStore;
+  public env: string;
   public app: Application;
   public port: string | number;
 
@@ -53,7 +53,7 @@ class App {
   }
 
   private initializeMiddleware() {
-    this.app.use(morgan("combined"));
+    this.app.use(morgan("combined", { stream }));
     this.app.use(
       cors({
         origin: [/localhost:/, /book-bazaar:/],
@@ -102,10 +102,7 @@ class App {
   }
 
   private initializeErrorHandling() {
-    this.app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-      errorMiddleware(err, req, res, next);
-    });
-    // this.app.use(errorMiddleware);
+    this.app.use(errorMiddleware);
   }
 }
 

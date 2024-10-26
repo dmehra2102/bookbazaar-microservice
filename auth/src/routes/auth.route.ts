@@ -3,7 +3,7 @@ import { AuthController } from "@/controllers/auth.controller";
 import { ensureAuthenticated, Routes } from "@dmehra2102-microservices-/bookbazaar-common";
 
 class AuthRoute implements Routes {
-  public path = "/auth";
+  public path: string = "/auth";
   public router: Router = Router();
   public authController = new AuthController();
 

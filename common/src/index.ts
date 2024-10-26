@@ -2,6 +2,7 @@ export * from "./utils/logger";
 
 // Interfaces
 export * from "./interfaces/routes.interface";
+export * from "./interfaces/userRequest.interface";
 
 // Errors
 export * from "./errors/custom-error";
