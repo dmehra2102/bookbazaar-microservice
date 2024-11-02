@@ -15,3 +15,11 @@ build:
         manual:
           - dest: .
             src: "src/**/*.ts"
+    - image: dmehra2102/bookbazaar-book-image
+      context: books
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: "src/**/*.ts"

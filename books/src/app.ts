@@ -2,35 +2,23 @@ import hpp from "hpp";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
-import passport from "passport";
+import { config } from "dotenv";
 import compression from "compression";
-import session from "express-session";
 import { connect, set } from "mongoose";
-import cookieParser from "cookie-parser";
 import express, { Application } from "express";
-import { NODE_ENV, PORT } from "@/config/env.config";
-import { passportConfig } from "@/config/passport.config";
-import ConnectMongoDBSession from "connect-mongodb-session";
 import { errorMiddleware, logger, Routes, stream } from "@dmehra2102-microservices-/bookbazaar-common";
 
-passportConfig(passport);
-const MongodbSessionStore = ConnectMongoDBSession(session);
+config({ path: `.env.${process.env.NODE_ENV || "development"}.local` });
 
 class App {
-  public store: ConnectMongoDBSession.MongoDBStore;
   public env: string;
   public app: Application;
   public port: string | number;
 
   constructor(routes: Routes[]) {
     this.app = express();
-    this.env = NODE_ENV || "development";
-    this.port = PORT || 3000;
-    this.store = new MongodbSessionStore({ uri: process.env.MONGODB_URI, collection: "userSession" }, function (error) {
-      if (error) {
-        logger.log(`MongodbSessionStore error while connection with mongodb :`, error);
-      }
-    });
+    this.env = process.env.NODE_ENV || "development";
+    this.port = process.env.PORT || 3000;
     this.connectToDatabase();
     this.initializeMiddleware();
     this.initializeRoutes(routes);
@@ -42,9 +30,9 @@ class App {
       set("debug", false);
     }
 
-    connect(process.env.MONGODB_URI)
+    connect(process.env.MONGODB_URI!)
       .then(() => {
-        logger.info("DB connection established for auth service");
+        logger.info("DB connection established for Order Service");
       })
       .catch(error => {
         console.error(error);
@@ -65,32 +53,13 @@ class App {
     this.app.use(compression());
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
-    this.app.use(cookieParser());
-    this.app.use(
-      session({
-        name: "user-auth-cookie",
-        secret: process.env.SESSION_SECRET,
-        resave: false,
-        saveUninitialized: false,
-        store: this.store,
-        cookie: {
-          domain: process.env.COOKIE_DOMAIN,
-          sameSite: "lax",
-          maxAge: 30 * 24 * 60 * 60 * 1000,
-          httpOnly: false,
-          secure: false,
-        },
-      }),
-    );
-    this.app.use(passport.initialize());
-    this.app.use(passport.session());
   }
 
   public listen() {
     this.app.listen(this.port, () => {
       logger.info(`=================================`);
       logger.info(`======= ENV: ${this.env} =======`);
-      logger.info(`🚀 🚀 Knock knock, who's there? It's your auth service http server, listening on port ${this.port}! 🚀 🚀`);
+      logger.info(`🚀 🚀 Knock knock, who's there? It's your order service http server, listening on port ${this.port}! 🚀 🚀`);
       logger.info(`=================================`);
     });
   }

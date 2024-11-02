@@ -1,6 +1,5 @@
 import passport from "passport";
 import { User } from "@/models/user.model";
-import { COOKIE_DOMAIN } from "@/config/env.config";
 import { NextFunction, Request, Response } from "express";
 import { RegisterUserInput, UserDocument } from "@/interfaces/user.interface";
 import { NotFoundError, UserRequest, UserRole } from "@dmehra2102-microservices-/bookbazaar-common";

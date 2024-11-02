@@ -17,3 +17,10 @@ spec:
                 name: bookbazaar-auth-srv
                 port:
                   number: 3000
+          - path: /book/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: bookbazaar-book-srv
+                port:
+                  number: 3000

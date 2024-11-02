@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: book-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: book
+  template:
+    metadata:
+      labels:
+        app: book
+    spec:
+      containers:
+        - name: book
+          image: dmehra2102/bookbazaar-book-image
+          env:
+            - name: MONGODB_URI
+              value: 'mongodb://bookbazaar-book-mongo-srv:27017/book'
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bookbazaar-book-srv
+spec:
+  selector:
+    app: book
+  ports:
+    - name: book
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
